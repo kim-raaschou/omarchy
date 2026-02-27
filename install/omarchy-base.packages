@@ -80,7 +80,8 @@ libyaml
 libqalculate
 libreoffice-fresh
 llvm
-localsend-go-bin  # aarch64: replaced — CLI Go binary, pre-built aarch64
+# TODO aarch64: localsend — no working aarch64 package yet, fix later
+# localsend-go-bin
 luarocks
 mako
 man-db

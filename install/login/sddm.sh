@@ -1,10 +1,19 @@
-# Install omarchy SDDM theme
-omarchy-refresh-sddm
+# Install omarchy SDDM theme (skip on aarch64 — QML theme deps may be missing)
+if [[ "$(uname -m)" != "aarch64" ]]; then
+  omarchy-refresh-sddm
+fi
 
 # Setup SDDM login service
 sudo mkdir -p /etc/sddm.conf.d
 if [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
-  cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
+  if [[ "$(uname -m)" == "aarch64" ]]; then
+    cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
+[Autologin]
+User=$USER
+Session=hyprland-uwsm
+EOF
+  else
+    cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
 [Autologin]
 User=$USER
 Session=hyprland-uwsm
@@ -12,6 +21,7 @@ Session=hyprland-uwsm
 [Theme]
 Current=omarchy
 EOF
+  fi
 fi
 
 # Prevent password-based SDDM logins from creating an encrypted login keyring

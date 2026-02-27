@@ -104,7 +104,8 @@ nss-mdns
 # aarch64: removed — custom mirror packages, not available
 # omarchy-nvim
 # omarchy-walker
-opencode-bin  # aarch64: renamed — upstream 'opencode' is from omarchy mirror, AUR has opencode-bin
+# TODO aarch64: opencode-bin — AUR has aarch64 binary but install fails, fix later
+# opencode-bin
 pamixer
 # pinta  # TODO aarch64: requires dotnet-runtime (provider conflict in --noconfirm mode)
 # aarch64: added — audio stack

@@ -62,13 +62,5 @@ cd ~/.local/share/omarchy
 git fetch origin "${OMARCHY_REF}" && git checkout "${OMARCHY_REF}"
 cd -
 
-# aarch64: deploy proper mirrorlist + pacman.conf from repo
-if [[ $(uname -m) == "aarch64" ]] && [[ -d ~/.local/share/omarchy/install/aarch64 ]]; then
-  echo "Deploying aarch64 pacman configuration from repo..."
-  sudo cp ~/.local/share/omarchy/install/aarch64/mirrorlist /etc/pacman.d/mirrorlist
-  sudo cp ~/.local/share/omarchy/install/aarch64/pacman.conf /etc/pacman.conf
-  sudo pacman -Sy --noconfirm
-fi
-
 echo -e "\nInstallation starting..."
 source ~/.local/share/omarchy/install.sh

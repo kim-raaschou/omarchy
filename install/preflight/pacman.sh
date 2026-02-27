@@ -3,7 +3,9 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
   omarchy-pkg-add base-devel
 
   if [[ $(uname -m) == "aarch64" ]]; then
-    # aarch64: pacman config already deployed by boot.sh — just refresh repos
+    # aarch64: deploy ALARM pacman config from repo (mirrors boot.sh's temporary setup)
+    sudo cp -f ~/.local/share/omarchy/install/aarch64/pacman.conf /etc/pacman.conf
+    sudo cp -f ~/.local/share/omarchy/install/aarch64/mirrorlist /etc/pacman.d/mirrorlist
     sudo pacman -Syyuu --noconfirm
   else
     # x86_64: configure omarchy mirror and keyring

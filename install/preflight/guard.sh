@@ -16,31 +16,33 @@ for marker in /etc/cachyos-release /etc/eos-release /etc/garuda-release /etc/man
   fi
 done
 
-# Must not be running as root
-if (( EUID == 0 )); then
+# aarch64: allow root (required for ALARM setups without a regular user)
+if [[ $(uname -m) != "aarch64" ]] && (( EUID == 0 )); then
   abort "Running as root (not user)"
 fi
 
-# Must be x86 only to fully work
-if [[ $(uname -m) != "x86_64" ]]; then
-  abort "x86_64 CPU"
+# Must be x86_64 or aarch64
+if [[ $(uname -m) != "x86_64" ]] && [[ $(uname -m) != "aarch64" ]]; then
+  abort "x86_64 or aarch64 CPU"
 fi
 
-# Must have secure boot disabled
-if bootctl status 2>/dev/null | grep -q 'Secure Boot: enabled'; then
-  abort "Secure Boot disabled"
+# Must have secure boot disabled (skip on aarch64 — no bootctl)
+if [[ $(uname -m) != "aarch64" ]]; then
+  if bootctl status 2>/dev/null | grep -q 'Secure Boot: enabled'; then
+    abort "Secure Boot disabled"
+  fi
 fi
 
-# Must not have Gnome or KDE already install
+# Must not have Gnome or KDE already installed
 if pacman -Qe gnome-shell &>/dev/null || pacman -Qe plasma-desktop &>/dev/null; then
   abort "Fresh + Vanilla Arch"
 fi
 
-# Must have limine installed
-command -v limine &>/dev/null || abort "Limine bootloader"
-
-# Must have btrfs root filesystem
-[[ $(findmnt -n -o FSTYPE /) = "btrfs" ]] || abort "Btrfs root filesystem" 
+# Limine and btrfs checks only on x86_64 (aarch64 uses different bootloaders/filesystems)
+if [[ $(uname -m) != "aarch64" ]]; then
+  command -v limine &>/dev/null || abort "Limine bootloader"
+  [[ $(findmnt -n -o FSTYPE /) = "btrfs" ]] || abort "Btrfs root filesystem"
+fi
 
 # Cleared all guards
 echo "Guards: OK"

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# aarch64: no omarchy mirror channels
+if [[ "$(uname -m)" == "aarch64" ]]; then
+  echo "alarm"
+  exit 0
+fi
+
 if grep -q "https://stable-mirror.omarchy.org/" /etc/pacman.d/mirrorlist; then
   mirror="stable"
 elif grep -q "https://rc-mirror.omarchy.org/" /etc/pacman.d/mirrorlist; then

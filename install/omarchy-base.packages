@@ -56,7 +56,7 @@ gvfs-smb
 hypridle
 hyprland
 hyprland-guiutils
-hyprland-preview-share-picker-git  # aarch64: replaced -- original is omarchy mirror package
+# hyprland-preview-share-picker-git  # TODO aarch64: build fails on aarch64, re-enable when fixed
 hyprlock
 hyprpicker
 hyprsunset
@@ -101,7 +101,7 @@ obsidian-appimage  # aarch64: replaced -- self-contained arm64 AppImage, no dotn
 # omarchy-walker
 opencode
 pamixer
-pinta
+# pinta  # TODO aarch64: requires dotnet-runtime (provider conflict in --noconfirm mode)
 # aarch64: added — audio stack
 pipewire
 pipewire-alsa

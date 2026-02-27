@@ -1,6 +1,10 @@
 # Omarchy core package list installed via install/packaging/base.sh
 # This file is also used by the ISO builder when determining needs
 
+# aarch64: removed — no aarch64 builds
+# 1password-beta
+# 1password-cli
+
 aether
 alacritty
 alsa-utils
@@ -35,6 +39,7 @@ fcitx5-qt
 fd
 ffmpegthumbnailer
 fontconfig
+# aarch64: added — app launcher (replaces walker)
 fuzzel
 fzf
 github-cli
@@ -42,6 +47,8 @@ gnome-calculator
 gnome-keyring
 gnome-themes-extra
 grim
+# aarch64: removed — x86_64-only
+# gpu-screen-recorder
 gum
 gvfs-mtp
 gvfs-nfs
@@ -61,6 +68,8 @@ inxi
 iwd
 jq
 kdenlive
+# aarch64: removed — service no longer exists
+# kernel-modules-hook
 kvantum-qt5
 lazydocker
 lazygit
@@ -87,9 +96,13 @@ nss-mdns
 nvim
 obs-studio
 obsidian
+# aarch64: removed — custom mirror packages, not available
+# omarchy-nvim
+# omarchy-walker
 opencode
 pamixer
 pinta
+# aarch64: added — audio stack
 pipewire
 pipewire-alsa
 pipewire-jack
@@ -111,6 +124,9 @@ satty
 sddm
 signal-desktop
 slurp
+# aarch64: replaced by ncspot (terminal TUI)
+# spotify
+# aarch64: added — terminal Spotify client
 ncspot
 starship
 sushi

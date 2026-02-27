@@ -34,6 +34,11 @@ if [[ $(uname -m) == "aarch64" ]]; then
     echo 'Server = http://de.mirror.archlinuxarm.org/$arch/$repo' | sudo tee -a /etc/pacman.d/mirrorlist >/dev/null
   fi
 
+  # Remove stale [omarchy] repo from pacman.conf if left from a previous install attempt
+  if grep -q '^\[omarchy\]' /etc/pacman.conf 2>/dev/null; then
+    sudo sed -i '/^\[omarchy\]/,/^$/d' /etc/pacman.conf
+  fi
+
   # Install ALARM keyring and populate
   sudo pacman -Sy --noconfirm --needed archlinuxarm-keyring
   sudo pacman-key --populate archlinuxarm

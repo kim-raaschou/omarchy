@@ -6,11 +6,11 @@ fi
 # Setup SDDM login service
 sudo mkdir -p /etc/sddm.conf.d
 if [[ "$(uname -m)" == "aarch64" ]]; then
-  # aarch64: always write config (no omarchy theme — QML deps may be missing)
+  # aarch64: always write config (no omarchy theme, direct Hyprland session)
   cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
 [Autologin]
 User=$USER
-Session=hyprland-uwsm
+Session=hyprland-direct
 EOF
 elif [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
   cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf

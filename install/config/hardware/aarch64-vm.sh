@@ -36,3 +36,14 @@ LIBGL_ALWAYS_SOFTWARE=1
 EOF
   echo "Added software rendering env vars to /etc/environment"
 fi
+
+# 3. Create a direct Hyprland session (bypasses uwsm which may fail on aarch64)
+# The stock hyprland.desktop uses start-hyprland/uwsm which can cause login loops.
+sudo tee /usr/share/wayland-sessions/hyprland-direct.desktop >/dev/null <<'EOF'
+[Desktop Entry]
+Name=Hyprland (Direct)
+Comment=Hyprland compositor — direct launch for aarch64
+Exec=Hyprland
+Type=Application
+EOF
+echo "Created direct Hyprland session (hyprland-direct.desktop)"

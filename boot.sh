@@ -20,8 +20,10 @@ echo -e "\n$ansi_art\n"
 # Use custom branch if instructed, otherwise default to master
 OMARCHY_REF="${OMARCHY_REF:-master}"
 
-# Set mirror based on branch
-if [[ $OMARCHY_REF == "dev" ]]; then
+# Set mirror based on branch (omarchy mirrors are x86_64-only, skip on aarch64)
+if [[ $(uname -m) == "aarch64" ]]; then
+  echo "aarch64 detected — keeping existing ALARM mirrors"
+elif [[ $OMARCHY_REF == "dev" ]]; then
   export OMARCHY_MIRROR=edge
   echo 'Server = https://mirror.omarchy.org/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist >/dev/null
 elif [[ $OMARCHY_REF == "rc" ]]; then

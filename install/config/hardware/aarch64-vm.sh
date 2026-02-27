@@ -37,13 +37,25 @@ EOF
   echo "Added software rendering env vars to /etc/environment"
 fi
 
-# 3. Create a direct Hyprland session (bypasses uwsm which may fail on aarch64)
+# 3. Wrapper script — guarantees env vars are set regardless of how SDDM
+#    handles session launch (PAM may not read /etc/environment on auto-login)
+sudo tee /usr/local/bin/hyprland-direct >/dev/null <<'WRAPPER'
+#!/bin/bash
+export WLR_RENDERER=pixman
+export WLR_NO_HARDWARE_CURSORS=1
+export LIBGL_ALWAYS_SOFTWARE=1
+exec Hyprland "$@"
+WRAPPER
+sudo chmod +x /usr/local/bin/hyprland-direct
+echo "Created /usr/local/bin/hyprland-direct wrapper"
+
+# 4. Create a direct Hyprland session (bypasses uwsm which may fail on aarch64)
 # The stock hyprland.desktop uses start-hyprland/uwsm which can cause login loops.
 sudo tee /usr/share/wayland-sessions/hyprland-direct.desktop >/dev/null <<'EOF'
 [Desktop Entry]
 Name=Hyprland (Direct)
 Comment=Hyprland compositor — direct launch for aarch64
-Exec=Hyprland
+Exec=/usr/local/bin/hyprland-direct
 Type=Application
 EOF
 echo "Created direct Hyprland session (hyprland-direct.desktop)"

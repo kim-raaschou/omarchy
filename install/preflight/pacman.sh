@@ -5,8 +5,8 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
     sudo cp -f ~/.local/share/omarchy/install/aarch64/pacman.conf /etc/pacman.conf
     sudo cp -f ~/.local/share/omarchy/install/aarch64/mirrorlist /etc/pacman.d/mirrorlist
 
-    # Remove stale omarchy DB files from any previous install attempts
-    sudo rm -f /var/lib/pacman/sync/omarchy.db*
+    # Remove all stale sync DBs — fresh -Syy will re-download
+    sudo rm -rf /var/lib/pacman/sync/*
 
     # Force-refresh all package databases
     sudo pacman -Syy --noconfirm

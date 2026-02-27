@@ -28,7 +28,10 @@ if [[ $(uname -m) == "aarch64" ]]; then
   sudo pacman-key --init
   sudo pacman-key --populate
 
-  # Deploy clean ALARM pacman config (overwrites any stale omarchy config from previous installs)
+  # Remove stale omarchy DB files from any previous install attempts
+  sudo rm -f /var/lib/pacman/sync/omarchy.db*
+
+  # Deploy clean ALARM pacman config (overwrites any stale config from previous installs)
   sudo tee /etc/pacman.conf >/dev/null <<'PACMANCONF'
 [options]
 HoldPkg = pacman glibc
@@ -54,8 +57,18 @@ Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
 Server = http://de.mirror.archlinuxarm.org/$arch/$repo
 MIRRORLIST
 
-  # Install ALARM keyring and populate
-  sudo pacman -Sy --noconfirm --needed archlinuxarm-keyring
+  # Verify config was written correctly
+  if grep -q "omarchy" /etc/pacman.conf 2>/dev/null || grep -q "omarchy" /etc/pacman.d/mirrorlist 2>/dev/null; then
+    echo "ERROR: pacman config still contains omarchy references after deployment!"
+    echo "pacman.conf:"
+    cat /etc/pacman.conf
+    echo "mirrorlist:"
+    cat /etc/pacman.d/mirrorlist
+    exit 1
+  fi
+
+  # Force-refresh DBs and install ALARM keyring
+  sudo pacman -Syy --noconfirm --needed archlinuxarm-keyring
   sudo pacman-key --populate archlinuxarm
 elif [[ $OMARCHY_REF == "dev" ]]; then
   export OMARCHY_MIRROR=edge

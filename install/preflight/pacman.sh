@@ -1,12 +1,21 @@
 if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
-  # Install build tools
-  omarchy-pkg-add base-devel
-
   if [[ $(uname -m) == "aarch64" ]]; then
-    # aarch64: deploy ALARM pacman config from repo (mirrors boot.sh's temporary setup)
+    # aarch64: deploy ALARM pacman config BEFORE any pacman operations
+    echo "Deploying ALARM pacman config..."
     sudo cp -f ~/.local/share/omarchy/install/aarch64/pacman.conf /etc/pacman.conf
     sudo cp -f ~/.local/share/omarchy/install/aarch64/mirrorlist /etc/pacman.d/mirrorlist
-    sudo pacman -Syyuu --noconfirm
+
+    # Remove stale omarchy DB files from any previous install attempts
+    sudo rm -f /var/lib/pacman/sync/omarchy.db*
+
+    # Force-refresh all package databases
+    sudo pacman -Syy --noconfirm
+
+    # Install build tools (needed for AUR builds later)
+    omarchy-pkg-add base-devel
+
+    # Full system upgrade
+    sudo pacman -Suu --noconfirm
 
     # Bootstrap yay (AUR helper) — not in ALARM repos, download pre-built aarch64 binary
     if ! command -v yay &>/dev/null; then
@@ -19,7 +28,9 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
       echo "yay ${YAY_VERSION} installed."
     fi
   else
-    # x86_64: configure omarchy mirror and keyring
+    # x86_64: install build tools first, then configure omarchy mirror
+    omarchy-pkg-add base-devel
+
     sudo cp -f ~/.local/share/omarchy/default/pacman/pacman-${OMARCHY_MIRROR:-stable}.conf /etc/pacman.conf
     sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist-${OMARCHY_MIRROR:-stable} /etc/pacman.d/mirrorlist
 

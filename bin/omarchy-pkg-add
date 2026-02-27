@@ -1,9 +1,25 @@
 #!/bin/bash
 
 # Add the named packages to the system if they're missing. Returns false if it couldn't be done.
+# On aarch64 (without the omarchy mirror), falls back to yay for AUR packages.
 
 if omarchy-pkg-missing "$@"; then
-  sudo pacman -S --noconfirm --needed "$@" || exit 1
+  # Try pacman first for all packages
+  if ! sudo pacman -S --noconfirm --needed "$@" 2>/dev/null; then
+    # If pacman fails (likely AUR packages not in repos), install one-by-one
+    for pkg in "$@"; do
+      if ! pacman -Q "$pkg" &>/dev/null; then
+        if sudo pacman -S --noconfirm --needed "$pkg" 2>/dev/null; then
+          continue
+        elif command -v yay &>/dev/null; then
+          echo "Falling back to yay for: $pkg"
+          yay -S --noconfirm --needed "$pkg" || echo -e "\033[33mWarning: Could not install '$pkg' via yay\033[0m" >&2
+        else
+          echo -e "\033[33mWarning: Package '$pkg' not in repos and yay not available\033[0m" >&2
+        fi
+      fi
+    done
+  fi
 fi
 
 for pkg in "$@"; do

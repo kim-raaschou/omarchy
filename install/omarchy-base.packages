@@ -93,13 +93,13 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 nss-mdns
-nvim
+neovim  # aarch64: renamed — upstream uses custom 'nvim' pkg from omarchy mirror
 obs-studio
 obsidian-appimage  # aarch64: replaced -- self-contained arm64 AppImage, no dotnet needed
 # aarch64: removed — custom mirror packages, not available
 # omarchy-nvim
 # omarchy-walker
-opencode
+opencode-bin  # aarch64: renamed — upstream 'opencode' is from omarchy mirror, AUR has opencode-bin
 pamixer
 # pinta  # TODO aarch64: requires dotnet-runtime (provider conflict in --noconfirm mode)
 # aarch64: added — audio stack
@@ -136,7 +136,7 @@ system-config-printer
 tldr
 tree-sitter-cli
 tmux
-tobi-try
+# tobi-try  # aarch64: removed — omarchy custom mirror package, not in AUR
 ttf-ia-writer
 ttf-jetbrains-mono-nerd
 typora
@@ -149,10 +149,10 @@ uwsm
 waybar
 whois
 wireless-regdb
-wiremix
+wiremix-git  # aarch64: renamed — upstream 'wiremix' is from omarchy mirror, AUR has wiremix-git
 wireplumber
 wl-clipboard
-woff2-font-awesome
+# woff2-font-awesome  # aarch64: removed — omarchy custom mirror package, not in AUR
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-terminal-exec

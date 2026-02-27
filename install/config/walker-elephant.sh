@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Walker/Elephant setup — skip if walker is not installed
+# (aarch64 uses fuzzel instead; walker depends on GTK4/WebKit which has issues on ARM)
+if ! command -v walker &>/dev/null; then
+  exit 0
+fi
+
 # Ensure Walker service is started automatically on boot
 mkdir -p ~/.config/autostart/
 cp $OMARCHY_PATH/default/walker/walker.desktop ~/.config/autostart/

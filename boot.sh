@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ensure HOME is set correctly (sudo -u doesn't always set it)
+export HOME=$(getent passwd "$(whoami)" | cut -d: -f6)
+
 # Set install mode to online since boot.sh is used for curl installations
 export OMARCHY_ONLINE_INSTALL=true
 

@@ -86,7 +86,7 @@ fi
 # On aarch64 we already synced in the block above; on x86_64 the mirror was just set.
 # Only install git here (needed for clone below). Full upgrade happens in preflight/pacman.sh.
 if [[ $(uname -m) == "aarch64" ]]; then
-  sudo pacman -S --noconfirm --needed git
+  sudo pacman -S --noconfirm --needed git base-devel
 else
   sudo pacman -Syu --noconfirm --needed git base-devel
 fi

@@ -5,7 +5,7 @@
 # 1password-beta
 # 1password-cli
 
-aether
+# aether  # aarch64: removed -- omarchy custom mirror package, not available
 alacritty
 alsa-utils
 asdcontrol

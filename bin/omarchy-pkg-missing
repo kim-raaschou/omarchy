@@ -3,7 +3,7 @@
 # Returns true if any of the named packages are missing from the system (or false if they're all there).
 
 for pkg in "$@"; do
-  if ! pacman -Q "$pkg" &>/dev/null; then
+  if ! pacman -Q "$pkg" &>/dev/null && ! pacman -Q "${pkg%-git}" &>/dev/null; then
     exit 0
   fi
 done

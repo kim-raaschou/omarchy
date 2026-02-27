@@ -8,7 +8,7 @@
 # aether  # aarch64: removed -- omarchy custom mirror package, not available
 alacritty
 alsa-utils
-asdcontrol
+# asdcontrol  # aarch64: removed -- omarchy custom mirror package (Apple Studio Display)
 avahi
 bash-completion
 bat
@@ -159,5 +159,5 @@ xdg-terminal-exec
 xmlstarlet
 xournalpp
 yaru-icon-theme
-yay
+# yay  # aarch64: bootstrapped as yay-bin in preflight/pacman.sh (requires makepkg)
 zoxide

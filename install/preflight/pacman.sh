@@ -7,6 +7,17 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
     sudo cp -f ~/.local/share/omarchy/install/aarch64/pacman.conf /etc/pacman.conf
     sudo cp -f ~/.local/share/omarchy/install/aarch64/mirrorlist /etc/pacman.d/mirrorlist
     sudo pacman -Syyuu --noconfirm
+
+    # Bootstrap yay (AUR helper) — not in ALARM repos, download pre-built aarch64 binary
+    if ! command -v yay &>/dev/null; then
+      echo "Bootstrapping yay (AUR helper)..."
+      YAY_VERSION=$(curl -s https://api.github.com/repos/Jguer/yay/releases/latest | grep -Po '"tag_name": "v\K[^"]+')
+      curl -Lo /tmp/yay.tar.gz "https://github.com/Jguer/yay/releases/download/v${YAY_VERSION}/yay_${YAY_VERSION}_aarch64.tar.gz"
+      tar xzf /tmp/yay.tar.gz -C /tmp
+      install -m755 "/tmp/yay_${YAY_VERSION}_aarch64/yay" /usr/bin/yay
+      rm -rf /tmp/yay*
+      echo "yay ${YAY_VERSION} installed."
+    fi
   else
     # x86_64: configure omarchy mirror and keyring
     sudo cp -f ~/.local/share/omarchy/default/pacman/pacman-${OMARCHY_MIRROR:-stable}.conf /etc/pacman.conf

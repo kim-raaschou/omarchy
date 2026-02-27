@@ -1,0 +1,2 @@
+Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
+Server = http://de.mirror.archlinuxarm.org/$arch/$repo

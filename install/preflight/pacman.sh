@@ -14,7 +14,7 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
       YAY_VERSION=$(curl -s https://api.github.com/repos/Jguer/yay/releases/latest | grep -Po '"tag_name": "v\K[^"]+')
       curl -Lo /tmp/yay.tar.gz "https://github.com/Jguer/yay/releases/download/v${YAY_VERSION}/yay_${YAY_VERSION}_aarch64.tar.gz"
       tar xzf /tmp/yay.tar.gz -C /tmp
-      install -m755 "/tmp/yay_${YAY_VERSION}_aarch64/yay" /usr/bin/yay
+      sudo install -m755 "/tmp/yay_${YAY_VERSION}_aarch64/yay" /usr/bin/yay
       rm -rf /tmp/yay*
       echo "yay ${YAY_VERSION} installed."
     fi

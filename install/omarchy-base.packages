@@ -1,8 +1,6 @@
 # Omarchy core package list installed via install/packaging/base.sh
 # This file is also used by the ISO builder when determining needs
 
-1password-beta
-1password-cli
 aether
 alacritty
 alsa-utils
@@ -37,13 +35,13 @@ fcitx5-qt
 fd
 ffmpegthumbnailer
 fontconfig
+fuzzel
 fzf
 github-cli
 gnome-calculator
 gnome-keyring
 gnome-themes-extra
 grim
-gpu-screen-recorder
 gum
 gvfs-mtp
 gvfs-nfs
@@ -63,7 +61,6 @@ inxi
 iwd
 jq
 kdenlive
-kernel-modules-hook
 kvantum-qt5
 lazydocker
 lazygit
@@ -90,11 +87,13 @@ nss-mdns
 nvim
 obs-studio
 obsidian
-omarchy-nvim
-omarchy-walker
 opencode
 pamixer
 pinta
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
 playerctl
 plocate
 plymouth
@@ -112,7 +111,7 @@ satty
 sddm
 signal-desktop
 slurp
-spotify
+ncspot
 starship
 sushi
 swaybg

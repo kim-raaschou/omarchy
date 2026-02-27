@@ -122,7 +122,7 @@ ruby
 rust
 satty
 sddm
-signal-desktop
+# signal-desktop  # aarch64: removed -- no aarch64 builds (Electron x86_64 only)
 slurp
 # aarch64: replaced by ncspot (terminal TUI)
 # spotify

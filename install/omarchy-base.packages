@@ -26,7 +26,7 @@ cups-pdf
 docker
 docker-buildx
 docker-compose
-dotnet-runtime-9.0
+# dotnet-runtime-9.0  # aarch64: removed -- provider conflict in --noconfirm mode, only needed by obsidian
 dust
 evince
 exfatprogs
@@ -95,7 +95,7 @@ noto-fonts-emoji
 nss-mdns
 nvim
 obs-studio
-obsidian
+obsidian-appimage  # aarch64: replaced -- self-contained arm64 AppImage, no dotnet needed
 # aarch64: removed — custom mirror packages, not available
 # omarchy-nvim
 # omarchy-walker

@@ -157,7 +157,8 @@ uwsm
 waybar
 whois
 wireless-regdb
-wiremix-git  # aarch64: renamed — upstream 'wiremix' is from omarchy mirror, AUR has wiremix-git
+# TODO aarch64: wiremix-git — AUR build fails on aarch64, upstream 'wiremix' is omarchy-mirror-only
+# wiremix-git
 wireplumber
 wl-clipboard
 # woff2-font-awesome  # aarch64: removed — omarchy custom mirror package, not in AUR

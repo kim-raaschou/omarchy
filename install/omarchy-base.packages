@@ -97,7 +97,8 @@ noto-fonts-emoji
 nss-mdns
 # TODO aarch64: neovim — fails to install, fix later
 # neovim
-obs-studio-git  # aarch64: renamed — obs-studio has provider conflicts in --noconfirm mode
+# TODO aarch64: obs-studio — provider conflicts in --noconfirm mode, fix later
+# obs-studio-git
 # TODO aarch64: obsidian-appimage — AUR AppImage build, needs testing on aarch64 (replaces obsidian)
 # obsidian-appimage
 # aarch64: removed — custom mirror packages, not available

@@ -28,16 +28,31 @@ if [[ $(uname -m) == "aarch64" ]]; then
   sudo pacman-key --init
   sudo pacman-key --populate
 
-  # Ensure we have working ALARM mirrors for the initial pacman sync
-  if ! grep -q "archlinuxarm.org" /etc/pacman.d/mirrorlist 2>/dev/null; then
-    echo 'Server = http://dk.mirror.archlinuxarm.org/$arch/$repo' | sudo tee /etc/pacman.d/mirrorlist >/dev/null
-    echo 'Server = http://de.mirror.archlinuxarm.org/$arch/$repo' | sudo tee -a /etc/pacman.d/mirrorlist >/dev/null
-  fi
+  # Deploy clean ALARM pacman config (overwrites any stale omarchy config from previous installs)
+  sudo tee /etc/pacman.conf >/dev/null <<'PACMANCONF'
+[options]
+HoldPkg = pacman glibc
+Architecture = aarch64
+CheckSpace
+ParallelDownloads = 5
+DownloadUser = alpm
+SigLevel = Required DatabaseOptional
+LocalFileSigLevel = Optional
 
-  # Remove stale [omarchy] repo from pacman.conf if left from a previous install attempt
-  if grep -q '^\[omarchy\]' /etc/pacman.conf 2>/dev/null; then
-    sudo sed -i '/^\[omarchy\]/,/^$/d' /etc/pacman.conf
-  fi
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+Include = /etc/pacman.d/mirrorlist
+
+[alarm]
+Include = /etc/pacman.d/mirrorlist
+PACMANCONF
+
+  sudo tee /etc/pacman.d/mirrorlist >/dev/null <<'MIRRORLIST'
+Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
+Server = http://de.mirror.archlinuxarm.org/$arch/$repo
+MIRRORLIST
 
   # Install ALARM keyring and populate
   sudo pacman -Sy --noconfirm --needed archlinuxarm-keyring

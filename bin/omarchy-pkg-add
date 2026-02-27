@@ -1,12 +1,14 @@
 #!/bin/bash
 
 # Add the named packages to the system if they're missing. Returns false if it couldn't be done.
-# On aarch64 (without the omarchy mirror), classifies packages into repo vs AUR
-# and installs each group in a single batch for speed.
+# Classifies packages into repo vs AUR and installs each group in a single batch.
 
 if ! omarchy-pkg-missing "$@"; then
   exit 0  # All packages already installed
 fi
+
+# Ensure sync DB is fresh before classifying
+sudo pacman -Sy --noconfirm &>/dev/null
 
 # Classify packages into repo vs AUR
 repo_pkgs=()
@@ -28,6 +30,7 @@ done
 
 # Install repo packages in one batch
 if [[ ${#repo_pkgs[@]} -gt 0 ]]; then
+  echo "Installing from repos: ${repo_pkgs[*]}"
   sudo pacman -S --noconfirm --needed "${repo_pkgs[@]}"
 fi
 

@@ -5,15 +5,15 @@ fi
 
 # Setup SDDM login service
 sudo mkdir -p /etc/sddm.conf.d
-if [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
-  if [[ "$(uname -m)" == "aarch64" ]]; then
-    cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
+if [[ "$(uname -m)" == "aarch64" ]]; then
+  # aarch64: always write config (no omarchy theme — QML deps may be missing)
+  cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
 [Autologin]
 User=$USER
 Session=hyprland-uwsm
 EOF
-  else
-    cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
+elif [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
+  cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
 [Autologin]
 User=$USER
 Session=hyprland-uwsm
@@ -21,7 +21,6 @@ Session=hyprland-uwsm
 [Theme]
 Current=omarchy
 EOF
-  fi
 fi
 
 # Prevent password-based SDDM logins from creating an encrypted login keyring

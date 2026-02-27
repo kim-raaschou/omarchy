@@ -7,9 +7,6 @@ if ! omarchy-pkg-missing "$@"; then
   exit 0  # All packages already installed
 fi
 
-# Ensure sync DB is fresh before classifying
-sudo pacman -Sy --noconfirm &>/dev/null
-
 # Classify packages into repo vs AUR
 repo_pkgs=()
 aur_pkgs=()

@@ -80,7 +80,8 @@ libyaml
 libqalculate
 libreoffice-fresh
 llvm
-localsend-bin  # aarch64: renamed — 'localsend' builds from source (Flutter), -bin has pre-built aarch64 .deb
+# TODO aarch64: localsend-bin — pre-built aarch64 .deb, build fails (dep issue?), fix later
+# localsend-bin
 luarocks
 mako
 man-db

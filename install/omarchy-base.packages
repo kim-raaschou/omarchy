@@ -147,7 +147,8 @@ tmux
 ttf-ia-writer
 ttf-jetbrains-mono-nerd
 typora
-tzupdate
+# TODO aarch64: tzupdate — AUR PKGBUILD is x86_64-only (Rust/cargo, should build on aarch64 if PKGBUILD allows)
+# tzupdate
 ufw
 ufw-docker
 unzip

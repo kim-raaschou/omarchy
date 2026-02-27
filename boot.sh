@@ -66,6 +66,15 @@ MIRRORLIST
   # Wipe ALL stale sync DBs (may contain omarchy.db/multilib.db from previous failed runs)
   sudo rm -rf /var/lib/pacman/sync/*
 
+  # Diagnostics: show config + sync state before first pacman call
+  echo "--- pacman.conf repos ---"
+  grep '^\[' /etc/pacman.conf
+  echo "--- sync DBs ---"
+  ls /var/lib/pacman/sync/ 2>/dev/null || echo "(empty)"
+  echo "--- mirrorlist ---"
+  cat /etc/pacman.d/mirrorlist
+  echo "-------------------------"
+
   # Initialize keyring and populate ALARM keys BEFORE any pacman operations
   sudo pacman-key --init
   sudo pacman-key --populate archlinuxarm

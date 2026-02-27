@@ -95,7 +95,8 @@ noto-fonts-emoji
 nss-mdns
 neovim  # aarch64: renamed — upstream uses custom 'nvim' pkg from omarchy mirror
 obs-studio
-obsidian-appimage  # aarch64: replaced -- self-contained arm64 AppImage, no dotnet needed
+# TODO aarch64: obsidian-appimage — AUR AppImage build, needs testing on aarch64 (replaces obsidian)
+# obsidian-appimage
 # aarch64: removed — custom mirror packages, not available
 # omarchy-nvim
 # omarchy-walker

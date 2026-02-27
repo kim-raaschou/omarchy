@@ -111,7 +111,8 @@ pamixer
 # aarch64: added — audio stack
 pipewire
 pipewire-alsa
-pipewire-jack
+# TODO aarch64: pipewire-jack — provider conflict in --noconfirm mode, fix later
+# pipewire-jack
 pipewire-pulse
 playerctl
 plocate

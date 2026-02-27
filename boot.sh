@@ -27,14 +27,7 @@ OMARCHY_REF="${OMARCHY_REF:-master}"
 if [[ $(uname -m) == "aarch64" ]]; then
   echo "aarch64 detected — setting up ALARM package management..."
 
-  # Initialize keyring before any pacman operations
-  sudo pacman-key --init
-  sudo pacman-key --populate
-
-  # Remove all stale sync DBs — fresh -Syy will re-download
-  sudo rm -rf /var/lib/pacman/sync/*
-
-  # Deploy clean ALARM pacman config (overwrites any stale config from previous installs)
+  # Deploy clean ALARM pacman config FIRST (overwrites any stale config from previous installs)
   sudo tee /etc/pacman.conf >/dev/null <<'PACMANCONF'
 [options]
 HoldPkg = pacman glibc
@@ -58,21 +51,27 @@ PACMANCONF
   sudo tee /etc/pacman.d/mirrorlist >/dev/null <<'MIRRORLIST'
 Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
 Server = http://de.mirror.archlinuxarm.org/$arch/$repo
+Server = http://fl.us.mirror.archlinuxarm.org/$arch/$repo
+Server = http://ca.us.mirror.archlinuxarm.org/$arch/$repo
+Server = http://sg.mirror.archlinuxarm.org/$arch/$repo
 MIRRORLIST
 
-  # Verify config was written correctly
-  if grep -q "omarchy" /etc/pacman.conf 2>/dev/null || grep -q "omarchy" /etc/pacman.d/mirrorlist 2>/dev/null; then
-    echo "ERROR: pacman config still contains omarchy references after deployment!"
-    echo "pacman.conf:"
+  # Verify config was written correctly — no stale omarchy/multilib references
+  if grep -qE "omarchy|multilib" /etc/pacman.conf 2>/dev/null; then
+    echo "ERROR: pacman.conf still contains omarchy/multilib references!"
     cat /etc/pacman.conf
-    echo "mirrorlist:"
-    cat /etc/pacman.d/mirrorlist
     exit 1
   fi
 
-  # Force-refresh DBs and install ALARM keyring
-  sudo pacman -Syy --noconfirm --needed archlinuxarm-keyring
+  # Wipe ALL stale sync DBs (may contain omarchy.db/multilib.db from previous failed runs)
+  sudo rm -rf /var/lib/pacman/sync/*
+
+  # Initialize keyring and populate ALARM keys BEFORE any pacman operations
+  sudo pacman-key --init
   sudo pacman-key --populate archlinuxarm
+
+  # Single sync + keyring install
+  sudo pacman -Syy --noconfirm --needed archlinuxarm-keyring
 elif [[ $OMARCHY_REF == "dev" ]]; then
   export OMARCHY_MIRROR=edge
   echo 'Server = https://mirror.omarchy.org/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist >/dev/null
@@ -84,7 +83,13 @@ else
   echo 'Server = https://stable-mirror.omarchy.org/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist >/dev/null
 fi
 
-sudo pacman -Syu --noconfirm --needed git base-devel
+# On aarch64 we already synced in the block above; on x86_64 the mirror was just set.
+# Only install git here (needed for clone below). Full upgrade happens in preflight/pacman.sh.
+if [[ $(uname -m) == "aarch64" ]]; then
+  sudo pacman -S --noconfirm --needed git
+else
+  sudo pacman -Syu --noconfirm --needed git base-devel
+fi
 
 # Use custom repo if specified, otherwise default to basecamp/omarchy
 OMARCHY_REPO="${OMARCHY_REPO:-basecamp/omarchy}"

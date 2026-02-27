@@ -6,7 +6,8 @@
 # 1password-cli
 
 # aether  # aarch64: removed -- omarchy custom mirror package, not available
-alacritty
+# TODO aarch64: alacritty — fix later
+# alacritty
 alsa-utils
 # asdcontrol  # aarch64: removed -- omarchy custom mirror package (Apple Studio Display)
 avahi

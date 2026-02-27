@@ -17,8 +17,11 @@ fi
 echo "Setting channel to $channel"
 echo
 
-sudo cp -f "$OMARCHY_PATH/default/pacman/pacman-$channel.conf" /etc/pacman.conf
-sudo cp -f "$OMARCHY_PATH/default/pacman/mirrorlist-$channel" /etc/pacman.d/mirrorlist
+arch_suffix=""
+[[ "$(uname -m)" == "aarch64" ]] && arch_suffix="-aarch64"
+
+sudo cp -f "$OMARCHY_PATH/default/pacman/pacman-${channel}${arch_suffix}.conf" /etc/pacman.conf
+sudo cp -f "$OMARCHY_PATH/default/pacman/mirrorlist-${channel}${arch_suffix}" /etc/pacman.d/mirrorlist
 
 # Reset all package DBs and then update
 sudo pacman -Syyuu --noconfirm

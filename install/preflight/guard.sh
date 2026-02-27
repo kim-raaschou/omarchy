@@ -16,8 +16,8 @@ for marker in /etc/cachyos-release /etc/eos-release /etc/garuda-release /etc/man
   fi
 done
 
-# aarch64: allow root (required for ALARM setups without a regular user)
-if [[ $(uname -m) != "aarch64" ]] && (( EUID == 0 )); then
+# Must not run as root
+if (( EUID == 0 )); then
   abort "Running as root (not user)"
 fi
 

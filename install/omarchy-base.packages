@@ -80,8 +80,7 @@ libyaml
 libqalculate
 libreoffice-fresh
 llvm
-# TODO aarch64: localsend-bin — pre-built aarch64 .deb, build fails (dep issue?), fix later
-# localsend-bin
+localsend-go-bin  # aarch64: replaced — CLI Go binary, pre-built aarch64
 luarocks
 mako
 man-db
@@ -95,7 +94,8 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 nss-mdns
-neovim  # aarch64: renamed — upstream uses custom 'nvim' pkg from omarchy mirror
+# TODO aarch64: neovim — fails to install, fix later
+# neovim
 obs-studio-git  # aarch64: renamed — obs-studio has provider conflicts in --noconfirm mode
 # TODO aarch64: obsidian-appimage — AUR AppImage build, needs testing on aarch64 (replaces obsidian)
 # obsidian-appimage

@@ -47,6 +47,12 @@ cat > "$HOME/.config/hypr/aarch64.conf" <<'EOF'
 # Fix GTK apps on aarch64 (protocol error with default GSK renderer)
 # https://github.com/hyprwm/Hyprland/discussions/10530
 env = GSK_RENDERER,ngl
+
+# Disable hardware cursors — virtio-gpu doesn't support cursor planes,
+# which causes invisible mouse pointer in VMs
+cursor {
+    no_hardware_cursors = true
+}
 EOF
 
 # Source aarch64.conf from hyprland.conf (idempotent)
@@ -94,7 +100,7 @@ sudo tee /etc/keyd/default.conf >/dev/null <<'KEYD'
 [main]
 capslock = leftmeta
 KEYD
-sudo systemctl enable keyd
+sudo systemctl enable --now keyd
 
 # --- 7. Ensure user has DRM device access (Hyprland #8908) ---
 if ! groups "$USER" | grep -q '\bvideo\b'; then

@@ -55,17 +55,17 @@ if [[ -f "$HYPRCONF" ]] && ! grep -q 'aarch64\.conf' "$HYPRCONF"; then
   printf '\n# aarch64: ARM-specific render settings\nsource = ~/.config/hypr/aarch64.conf\n' >> "$HYPRCONF"
 fi
 
-# --- 4. Direct Hyprland wrapper (bypasses uwsm) ---
-# uwsm session management can cause login loops on aarch64.
-# This wrapper sets env vars that aquamarine reads at init (before hyprland.conf).
+# --- 4. Hyprland wrapper (sets aarch64 env vars, then uses start-hyprland) ---
+# AQ env vars must be set BEFORE Hyprland starts (aquamarine reads them at init).
+# We set them here, then delegate to start-hyprland for proper uwsm session management.
 sudo tee /usr/local/bin/hyprland-direct >/dev/null <<'WRAPPER'
 #!/bin/bash
-# aarch64: direct Hyprland launch with ARM-specific env vars
+# aarch64: set ARM-specific env vars, then launch via start-hyprland
 # AQ_NO_ATOMIC: disable DRM atomic modesetting (not fully supported by many ARM drivers)
 export AQ_NO_ATOMIC=1
 # Uncomment if display fails to initialize (virtio-gpu, older ARM SoCs):
 # export AQ_NO_MODIFIERS=1
-exec Hyprland "$@"
+exec start-hyprland "$@"
 WRAPPER
 sudo chmod +x /usr/local/bin/hyprland-direct
 
@@ -73,7 +73,7 @@ sudo chmod +x /usr/local/bin/hyprland-direct
 sudo tee /usr/share/wayland-sessions/hyprland-direct.desktop >/dev/null <<'EOF'
 [Desktop Entry]
 Name=Hyprland (Direct)
-Comment=Hyprland compositor — direct launch for aarch64
+Comment=Hyprland compositor via start-hyprland with aarch64 env vars
 Exec=/usr/local/bin/hyprland-direct
 Type=Application
 EOF

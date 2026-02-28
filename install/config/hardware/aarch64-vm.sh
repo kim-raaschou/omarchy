@@ -4,8 +4,8 @@
 # specific workarounds for Hyprland's DRM/GPU subsystem:
 #
 # 1. AQ_NO_ATOMIC=1 — many ARM DRM drivers lack full atomic modesetting support
-# 2. render { explicit_sync = 0 } — broken on split-node GPU topology (most ARM GPUs)
-# 3. GSK_RENDERER=ngl — default GSK renderer crashes GTK apps on aarch64
+# 2. GSK_RENDERER=ngl — default GSK renderer crashes GTK apps on aarch64
+# 3. keyd — remap Caps Lock to Super (Mac keyboards: Command is intercepted by macOS)
 #
 # References:
 #   https://github.com/hyprwm/Hyprland/issues/9404
@@ -78,7 +78,25 @@ Exec=/usr/local/bin/hyprland-direct
 Type=Application
 EOF
 
-# --- 6. Ensure user has DRM device access (Hyprland #8908) ---
+# --- 6. Remap Caps Lock to Super via keyd (kernel-level) ---
+# On Mac keyboards in Parallels, Command/Super is intercepted by macOS.
+# keyd remaps at the evdev level — Hyprland sees it as a normal Super key.
+if command -v keyd >/dev/null 2>&1 || pacman -Qi keyd >/dev/null 2>&1; then
+  echo "keyd already installed"
+else
+  sudo pacman -S --noconfirm keyd
+fi
+sudo mkdir -p /etc/keyd
+sudo tee /etc/keyd/default.conf >/dev/null <<'KEYD'
+[ids]
+*
+
+[main]
+capslock = leftmeta
+KEYD
+sudo systemctl enable keyd
+
+# --- 7. Ensure user has DRM device access (Hyprland #8908) ---
 if ! groups "$USER" | grep -q '\bvideo\b'; then
   sudo usermod -aG video "$USER"
   echo "Added $USER to video group for DRM device access"
